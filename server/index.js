@@ -109,7 +109,7 @@ app.delete('/api/cars/:id', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
-        
+
 
 app.get('/', (req, res) => {
   res.send('Server is running!');
