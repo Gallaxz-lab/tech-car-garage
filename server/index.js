@@ -43,7 +43,7 @@ app.get('/api/cars', async (req, res) => {
         const offset = (page - 1) * limit;
 
         const countResult = await pool.query('SELECT COUNT(*) FROM cars');
-    const total = parseInt(countResult.rows[0].count, 10);
+        const total = parseInt(countResult.rows[0].count, 10);
         const result = await pool.query('SELECT * FROM cars ORDER BY id ASC LIMIT $1 OFFSET $2',[limit, offset]);
         res.status(200).json({
         cars: result.rows,
