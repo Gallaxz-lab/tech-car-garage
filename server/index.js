@@ -38,9 +38,13 @@ app.post('/api/cars', async (req, res) => {
 
 app.get('/api/cars', async (req, res) => {
     try {
-        const result = await pool.query('SELECT * FROM cars ORDER BY id ASC');
+        const page = Math.max(1, parseInt(page, 10) || 1);
+        const limit = 6;
+        const offset = (page - 1) * limit;
+
+        const result = await pool.query('SELECT * FROM cars ORDER BY id ASC LIMIT $1 OFFSET $2',[limit, offset]);
         res.status(200).json({
-        cars: result.rows,
+        cars: result.rows,page,
     });
     } catch (error) {
         console.error('Error fetching cars:', error);
