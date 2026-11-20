@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Layout, Typography, Flex, Button, Row, Col, Card,
-  Modal, Form, Input, InputNumber, Popconfirm, message, Tag, Empty
+  Modal, Form, Input, InputNumber, Popconfirm, message, Tag, Empty, Pagination
 } from 'antd';
 import {
   PlusOutlined, EditOutlined, DeleteOutlined, CarOutlined
@@ -16,12 +16,15 @@ export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCar, setEditingCar] = useState(null);
   const [form] = Form.useForm();
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
 
   const fetchCars = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/cars`);
+      const res = await fetch(`${API_URL}/api/cars?page=${page}`);
       const data = await res.json();
       setCars(data.cars || []);
+      setTotal(data.total || 0);
     } catch {
       message.error('Failed to load cars from server');
     }
@@ -29,7 +32,7 @@ export default function App() {
 
   useEffect(() => {
     fetchCars();
-  }, []);
+  }, [page]);
 
   const openModal = (car = null) => {
     setEditingCar(car);
@@ -91,7 +94,7 @@ export default function App() {
 
         <Flex justify="space-between" align="center" style={{ marginBottom: 20 }}>
           <Title level={4} style={{ margin: 0 }}>
-            All Cars ({cars.length})
+            All Cars ({total})
           </Title>
           <Button type="primary" icon={<PlusOutlined />} onClick={() => openModal()}>
             Add New Car
@@ -142,6 +145,20 @@ export default function App() {
               </Col>
             ))}
           </Row>
+        )}
+        {total > 0 && (
+          <Flex justify="space-between" align="center" style={{ marginTop: 24 }}>
+            <Text type="secondary">
+              Showing {(page - 1) * 6 + 1}–{Math.min(page * 6, total)} of {total}
+            </Text>
+            <Pagination
+              simple={{ readOnly: true }}
+              current={page}
+              pageSize={6}
+              total={total}
+              onChange={(newPage) => setPage(newPage)}
+            />
+          </Flex>
         )}
       </Content>
 

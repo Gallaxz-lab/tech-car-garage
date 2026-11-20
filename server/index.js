@@ -38,13 +38,18 @@ app.post('/api/cars', async (req, res) => {
 
 app.get('/api/cars', async (req, res) => {
     try {
-        const page = Math.max(1, parseInt(page, 10) || 1);
+        const page = Math.max(1, parseInt(req.query.page, 10) || 1);
         const limit = 6;
         const offset = (page - 1) * limit;
 
+        const countResult = await pool.query('SELECT COUNT(*) FROM cars');
+    const total = parseInt(countResult.rows[0].count, 10);
         const result = await pool.query('SELECT * FROM cars ORDER BY id ASC LIMIT $1 OFFSET $2',[limit, offset]);
         res.status(200).json({
-        cars: result.rows,page,
+        cars: result.rows,
+        total,
+
+        page,
     });
     } catch (error) {
         console.error('Error fetching cars:', error);
