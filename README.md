@@ -2,8 +2,8 @@
 
 Web application for managing vehicle records, This is made for Job Application Test in Software Developer Position.
 
-# Another version of the application Built with the assistance of AI tools here's the link
-  **https://fleet-car-records.protongarage.workers.dev/**
+# Another version of the application Built with the assistance of AI tools here's the link  https://fleet-car-records.protongarage.workers.dev/
+ 
 
 1. **Full-Featured Version (`main` branch):**
    - Includes all core CRUD operations, **server-side pagination** (6 items/page), **debounced search & brand filtering**, **multi-criteria sorting** (newest, oldest, brand A–Z, license plate, year, odometer), **validated photo uploads** (JPG/PNG/WebP up to 2 MB with server-side magic-byte verification and automatic cleanup), and **filtered CSV export**.
